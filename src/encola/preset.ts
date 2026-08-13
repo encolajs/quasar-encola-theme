@@ -271,6 +271,10 @@ export function encolaOptions(
       // hover/focus color shifts instead of Material ink ripples
       ripple: false,
       dark: false,
+      // Notify hardcodes textColor 'white' (an !important color class);
+      // default it to the theme's text token instead. Colored toasts
+      // pass their on-* pairing: { color: 'positive', textColor: 'on-positive' }
+      notify: { textColor: 'on-surface' },
     },
   }
 }
