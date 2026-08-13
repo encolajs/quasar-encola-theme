@@ -3,7 +3,7 @@
 // checked in light AND dark after any theme change.
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { Calendar, Info, Moon, Plus, Search, Sun, Trash2 } from '@lucide/vue'
+import { Calendar, Info, Plus, Search, Trash2 } from '@lucide/vue'
 import { EFormField } from '@/encola'
 
 const $q = useQuasar()
@@ -53,18 +53,8 @@ function notify() {
 </script>
 
 <template>
-  <div class="q-pa-lg" style="max-width: 1100px; margin: 0 auto">
-    <div class="row items-center justify-between q-mb-lg">
-      <h1 class="text-h4 q-my-none">Kitchen sink</h1>
-      <q-btn
-        outline
-        :icon-right="undefined"
-        @click="$q.dark.toggle()"
-      >
-        <component :is="$q.dark.isActive ? Sun : Moon" :size="16" class="q-mr-sm" />
-        {{ $q.dark.isActive ? 'Light' : 'Dark' }}
-      </q-btn>
-    </div>
+  <div>
+    <h1 class="text-h4 q-mt-none q-mb-lg">Kitchen sink</h1>
 
     <!-- ======== typography ======== -->
     <q-card class="q-mb-lg">
