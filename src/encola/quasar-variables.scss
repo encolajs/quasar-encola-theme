@@ -1,0 +1,11 @@
+// =============================================================
+// Layer 1 — Quasar SASS variable overrides.
+// @quasar/vite-plugin injects this file (via sassVariables) before
+// quasar/src/css/variables.sass into every compiled style module, so
+// plain `$var: value;` definitions here win over Quasar's `!default`s.
+//
+// Keep this file DEFINITIONS-ONLY (no @use/@import/@mixin/@function):
+// the plugin then applies a fast targeted-injection path.
+// Every name below is verified against the installed
+// node_modules/quasar/src/css/variables.sass — never trust memory.
+// =============================================================
