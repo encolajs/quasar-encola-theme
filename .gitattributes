@@ -2,5 +2,6 @@
 # git archive, which honors export-ignore).
 CLAUDE.md export-ignore
 PLAN.md export-ignore
+product-description.md export-ignore
 .gitattributes export-ignore
 .idea export-ignore
