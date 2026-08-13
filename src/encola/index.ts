@@ -24,6 +24,7 @@ export type { EncolaColorOptions, ThemeVars } from './preset'
 export { palettes, derivePrimary } from './palettes'
 export type { PaletteName } from './palettes'
 export { lucideIconSet } from './icons'
+export { default as EFormField } from './components/EFormField.vue'
 
 /** The Encola theme as Quasar plugin options. */
 export function encola(

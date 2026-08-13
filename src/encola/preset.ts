@@ -16,8 +16,11 @@
 // =============================================================
 import type { QuasarPluginOptions } from 'quasar'
 import {
+  QBadge,
   QBtn,
+  QBtnDropdown,
   QCard,
+  QChip,
   QEditor,
   QField,
   QFile,
@@ -27,7 +30,6 @@ import {
   QTab,
   QTable,
   QUploader,
-  setCssVar,
 } from 'quasar'
 import { derivePrimary, palettes } from './palettes'
 import type { PaletteName } from './palettes'
@@ -54,6 +56,7 @@ export function buildThemes({
     'primary-hover': d.light.hover,
     'on-primary': d.light.on,
     secondary: p[500],
+    'on-secondary': '#ffffff',
     accent: d.light.primary,
 
     positive: '#22c55e', // green-500
@@ -89,6 +92,7 @@ export function buildThemes({
     'primary-hover': d.dark.hover,
     'on-primary': d.dark.on,
     secondary: p[400],
+    'on-secondary': p[900],
     accent: d.dark.primary,
 
     positive: '#4ade80', // green-400
@@ -122,24 +126,31 @@ export function buildThemes({
 }
 
 // ---- runtime application -------------------------------------------
-// Light values live on :root (config.brand at install, setCssVar after);
-// dark values live in an injected body.body--dark rule, which wins over
-// the :root/inline values by normal cascade when Dark mode is active.
+// Both themes live in ONE injected style tag: light values on :root,
+// dark values in a body.body--dark rule that wins by normal cascade.
+// Quasar's own config.brand is deliberately NOT used — its Body plugin
+// applies brand colors as inline styles on <body> (via setCssVar),
+// which no stylesheet rule can override, killing the dark swap.
 
-const DARK_STYLE_ID = 'encola-dark-vars'
+const THEME_STYLE_ID = 'encola-theme-vars'
 
-function injectDarkVars(dark: ThemeVars) {
+function cssBlock(vars: ThemeVars): string {
+  return Object.keys(vars)
+    .map((key) => `--q-${key}: ${vars[key]};`)
+    .join(' ')
+}
+
+function injectThemeVars(light: ThemeVars, dark: ThemeVars) {
   if (typeof document === 'undefined') return
-  let el = document.getElementById(DARK_STYLE_ID) as HTMLStyleElement | null
+  let el = document.getElementById(THEME_STYLE_ID) as HTMLStyleElement | null
   if (el === null) {
     el = document.createElement('style')
-    el.id = DARK_STYLE_ID
+    el.id = THEME_STYLE_ID
     document.head.appendChild(el)
   }
-  const vars = Object.keys(dark)
-    .map((key) => `--q-${key}: ${dark[key]};`)
-    .join(' ')
-  el.textContent = `body.body--dark { ${vars} }`
+  el.textContent =
+    `:root { ${cssBlock(light)} }\n` +
+    `body.body--dark { ${cssBlock(dark)} }`
 }
 
 /**
@@ -149,10 +160,7 @@ function injectDarkVars(dark: ThemeVars) {
  */
 export function applyTheme(colors: EncolaColorOptions = {}) {
   const { light, dark } = buildThemes(colors)
-  for (const key of Object.keys(light)) {
-    setCssVar(key, light[key])
-  }
-  injectDarkVars(dark)
+  injectThemeVars(light, dark)
 }
 
 // ---- component prop defaults ---------------------------------------
@@ -177,6 +185,33 @@ function defaultProp(
       : { type, default: value }
 }
 
+// Colors that have a paired on-<color> readable-text token in the theme
+const onColors = new Set([
+  'primary',
+  'secondary',
+  'positive',
+  'negative',
+  'info',
+  'warning',
+  'neutral',
+])
+
+// Boolean-ish check for raw (unnormalized) prop values: a bare attribute
+// arrives as '' which is falsy in JS but true to Vue
+const rawTrue = (value: unknown) => value === '' || value === true
+
+// Solid colored components read their text color from the paired on-*
+// token instead of Quasar's hardcoded white — that's what keeps dark
+// mode's 400-shade fills readable (deep text, like the Vuetify sibling).
+// Vue calls a function default with the raw props, so the default can
+// depend on `color` and skip flat/outline designs (their text IS the color).
+function onColorTextDefault(raw: Record<string, unknown>): string | undefined {
+  if (rawTrue(raw.flat) || rawTrue(raw.outline)) return undefined
+  return typeof raw.color === 'string' && onColors.has(raw.color)
+    ? `on-${raw.color}`
+    : undefined
+}
+
 let defaultsPatched = false
 
 function patchComponentDefaults() {
@@ -187,8 +222,21 @@ function patchComponentDefaults() {
   // `flat` etc. per use; those design flags win over `unelevated`.
   defaultProp(QBtn, 'noCaps', Boolean, true)
   defaultProp(QBtn, 'unelevated', Boolean, true)
+  // QBtnDropdown declares its own copy of the button props, and Vue
+  // resolves declared Boolean props to false (not undefined), which it
+  // then forwards to its inner QBtn — so it needs the same patches
+  defaultProp(QBtnDropdown, 'noCaps', Boolean, true)
+  defaultProp(QBtnDropdown, 'unelevated', Boolean, true)
   defaultProp(QTab, 'noCaps', Boolean, true)
   defaultProp(QRouteTab, 'noCaps', Boolean, true)
+
+  // readable text on solid fills, driven by the on-* tokens
+  for (const solid of [QBtn, QBtnDropdown, QBadge, QChip]) {
+    ;(solid as unknown as PatchableComponent).props.textColor = {
+      type: String,
+      default: onColorTextDefault,
+    }
+  }
 
   // Fields: outlined + dense is the 32px Encola field. The floating
   // `label` prop stays supported but off-theme — use EFormField.
@@ -212,9 +260,7 @@ export function encolaOptions(
   colors: EncolaColorOptions = {},
 ): Partial<QuasarPluginOptions> {
   patchComponentDefaults()
-
-  const { light, dark } = buildThemes(colors)
-  injectDarkVars(dark)
+  applyTheme(colors)
 
   return {
     iconSet: lucideIconSet,
@@ -222,7 +268,6 @@ export function encolaOptions(
       // hover/focus color shifts instead of Material ink ripples
       ripple: false,
       dark: false,
-      brand: light,
     },
   }
 }

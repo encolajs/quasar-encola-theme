@@ -2,6 +2,490 @@
    Layer 4 — override CSS.
    Quasar does NOT use CSS @layer: this file is imported after
    Quasar's CSS and wins by source order at equal-or-greater
-   specificity. When a rule loses, mirror Quasar's own selector —
-   never add !important.
+   specificity. When a rule loses, mirror Quasar's own selector
+   (including its body.desktop prefixes) — never add !important.
+
+   rem convention: px-locked SASS values (see quasar-variables.scss)
+   get their runtime effect re-emitted here in rem.
    ============================================================= */
+
+/* ---- global ------------------------------------------------- */
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  color: var(--q-on-surface);
+  background: var(--q-surface);
+}
+
+/* Quasar hardcodes #fff text on --q-dark-page */
+body.body--dark {
+  color: var(--q-on-surface);
+  background: var(--q-surface);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--q-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* belt & braces: the preset disables the directive globally */
+.q-ripple {
+  display: none;
+}
+
+/* transition-colors, never transform/shadow animations */
+.q-btn,
+.q-item,
+.q-chip,
+.q-tab,
+.q-field__control:before {
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+/* ---- hover/focus: color shifts, not Material ink ------------ */
+/* The focus-helper is Quasar's hover/focus overlay. Drop its layered
+   black/white washes; hover becomes a flat currentColor tint and
+   focus becomes a ring (below), not a glow. Selectors mirror
+   Quasar's own body.desktop rules to win on source order. */
+body.desktop .q-focus-helper:before,
+body.desktop .q-focus-helper:after {
+  display: none;
+}
+
+body.desktop .q-hoverable:hover > .q-focus-helper {
+  background: currentColor;
+  opacity: 0.06;
+}
+
+body.desktop .q-focusable:focus > .q-focus-helper,
+body.desktop .q-manual-focusable--focused > .q-focus-helper {
+  background: currentColor;
+  opacity: 0;
+}
+
+/* solid buttons "darken" on hover: a black wash at the same 15% the
+   theme's primary-hover mix uses (bg-* classes are !important in
+   Quasar, so the wash is the no-!important way to shift them) */
+body.desktop .q-btn--unelevated.q-hoverable:hover > .q-focus-helper {
+  background: #000;
+  opacity: 0.15;
+}
+
+/* dark mode brightens instead (the 400-shade brand colors darken
+   badly under a black wash) */
+body.desktop .body--dark .q-btn--unelevated.q-hoverable:hover > .q-focus-helper,
+body.body--dark.desktop .q-btn--unelevated.q-hoverable:hover > .q-focus-helper {
+  background: #fff;
+  opacity: 0.1;
+}
+
+/* outline/flat buttons tint from their own color */
+body.desktop .q-btn--outline.q-hoverable:hover > .q-focus-helper,
+body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
+  background: currentColor;
+  opacity: 0.08;
+}
+
+:is(.q-btn, .q-tab, .q-item):focus-visible {
+  outline: 2px solid var(--q-primary);
+  outline-offset: -2px;
+}
+
+.q-btn:focus-visible {
+  outline-offset: 2px;
+}
+
+/* ---- theme color utility classes ---------------------------- */
+/* Quasar only generates text-/bg- classes for its own named colors;
+   these make the Encola tokens usable through the `color` prop
+   (e.g. <q-btn color="neutral">). No Quasar rule competes with them,
+   so they need no !important. */
+.text-neutral {
+  color: var(--q-neutral);
+}
+.bg-neutral {
+  background: var(--q-neutral);
+}
+/* readable-text pairings for solid fills (the preset defaults solid
+   buttons/badges/chips to these via textColor) */
+.text-on-primary {
+  color: var(--q-on-primary);
+}
+.text-on-secondary {
+  color: var(--q-on-secondary);
+}
+.text-on-positive {
+  color: var(--q-on-positive);
+}
+.text-on-negative {
+  color: var(--q-on-negative);
+}
+.text-on-info {
+  color: var(--q-on-info);
+}
+.text-on-warning {
+  color: var(--q-on-warning);
+}
+.text-on-neutral {
+  color: var(--q-on-neutral);
+}
+.text-on-surface {
+  color: var(--q-on-surface);
+}
+.text-on-surface-variant {
+  color: var(--q-on-surface-variant);
+}
+.bg-surface {
+  background: var(--q-surface);
+}
+.bg-surface-muted {
+  background: var(--q-surface-muted);
+}
+.bg-surface-elevated {
+  background: var(--q-surface-elevated);
+}
+.bg-surface-accented {
+  background: var(--q-surface-accented);
+}
+
+/* ---- buttons ------------------------------------------------ */
+/* 32px at the default 0.875rem font — em so the `size` prop still
+   scales; Quasar's own 2.572em would be 36px */
+.q-btn {
+  min-height: 2.2857em;
+}
+
+/* icon buttons are rounded squares at control height, not Material
+   3em circles */
+.q-btn--round {
+  border-radius: 0.25rem;
+  min-height: 2.2857em;
+  min-width: 2.2857em;
+}
+
+.q-btn--rectangle {
+  border-radius: 0.25rem; /* rem re-emit of px-locked $generic radius */
+}
+
+/* colorless outline buttons get the neutral hairline instead of
+   currentColor (Quasar draws the border on :before) */
+.q-btn--outline:not([class*='text-']):before {
+  border-color: var(--q-ring);
+}
+
+/* QCardActions forces px padding onto rectangle buttons */
+.q-card__actions .q-btn--rectangle {
+  padding: 0.25rem 0.625rem;
+}
+
+/* ---- depth: hairlines + surface steps, never shadows -------- */
+.q-card {
+  box-shadow: none;
+  border-radius: 0.5rem;
+  background: var(--q-surface);
+}
+
+.q-card--dark {
+  box-shadow: none;
+}
+
+/* floating surfaces: real border, radius, no elevation */
+.q-menu {
+  border-radius: 0.5rem;
+  border: 1px solid var(--q-border);
+}
+
+.q-dialog__inner > div {
+  border-radius: 0.5rem;
+  border: 1px solid var(--q-border);
+  box-shadow: none;
+}
+
+.q-tooltip {
+  border: 1px solid var(--q-border);
+  font-weight: 500;
+}
+
+.q-banner {
+  border-radius: 0.5rem;
+  background: var(--q-surface);
+}
+
+/* ---- fields ------------------------------------------------- */
+/* 32px label-less fields (the EFormField convention). Fields using
+   the floating `label` prop keep Quasar's taller float geometry. */
+.q-field--dense:not(.q-field--labeled) .q-field__control,
+.q-field--dense:not(.q-field--labeled) .q-field__marginal {
+  height: 2rem;
+}
+
+.q-field--outlined .q-field__control {
+  border-radius: 0.25rem; /* rem re-emit of px-locked $generic radius */
+  padding: 0 0.625rem;
+}
+
+/* hairline ring idle and on hover (Quasar darkens to #000) —
+   both modes run through --q-ring */
+.q-field--outlined .q-field__control:before,
+.q-field--outlined .q-field__control:hover:before,
+.q-field--dark .q-field__control:before,
+.q-field--dark .q-field__control:hover:before {
+  border-color: var(--q-ring);
+}
+
+/* focused: primary takes over via the :after border (currentColor);
+   keep it hairline-width — the color is the signal, not the weight */
+.q-field--outlined.q-field--highlighted .q-field__control:after {
+  border-width: 1px;
+}
+
+.q-field__native,
+.q-field__prefix,
+.q-field__suffix,
+.q-field__input {
+  color: var(--q-on-surface);
+  letter-spacing: normal;
+}
+
+.q-field--dark .q-field__native,
+.q-field--dark .q-field__prefix,
+.q-field--dark .q-field__suffix,
+.q-field--dark .q-field__input {
+  color: var(--q-on-surface);
+}
+
+.q-field__native::placeholder,
+.q-field__input::placeholder {
+  color: var(--q-on-surface);
+  opacity: 0.4;
+}
+
+.q-field__marginal {
+  color: var(--q-on-surface-variant);
+}
+
+.q-field__bottom {
+  color: var(--q-on-surface-variant);
+  padding: 0.25rem 0.125rem 0;
+}
+
+/* ---- selection controls (checkbox / radio / toggle) --------- */
+/* idle controls wear the hairline color; active states re-assert
+   primary (same specificity as the idle rule, so order matters) */
+.q-checkbox__inner,
+.q-radio__inner {
+  color: var(--q-ring);
+}
+
+.q-checkbox__inner--truthy,
+.q-checkbox__inner--indet,
+.q-radio__inner--truthy {
+  color: var(--q-primary);
+}
+
+.q-checkbox__bg {
+  border-width: 1px;
+  border-radius: 0.25rem;
+}
+
+/* no hover halo; focus is a ring like everything else */
+body.desktop .q-checkbox:not(.disabled) .q-checkbox__inner:before,
+body.desktop .q-radio:not(.disabled) .q-radio__inner:before,
+body.desktop .q-toggle:not(.disabled) .q-toggle__thumb:before {
+  display: none;
+}
+
+.q-checkbox__inner:has(.q-checkbox__native:focus-visible),
+.q-radio__inner:has(.q-radio__native:focus-visible),
+.q-toggle__inner:has(.q-toggle__native:focus-visible) {
+  outline: 2px solid var(--q-primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.q-toggle__inner:has(.q-toggle__native:focus-visible) {
+  border-radius: 9999px;
+}
+
+/* compact rem-sized toggle (Nuxt UI proportions: 2.25rem × 1.25rem
+   full-pill track, 1rem thumb, 0.125rem edge gap — Quasar's em-based
+   40px geometry re-emitted in rem) */
+.q-toggle__inner {
+  font-size: 2rem;
+  width: 2.75rem;
+  min-width: 2.75rem;
+  height: 1.75rem;
+  padding: 0.25rem;
+}
+
+.q-toggle__track {
+  height: 1.25rem;
+  border-radius: 9999px;
+  opacity: 1;
+  background: var(--q-surface-accented);
+}
+
+.q-toggle__inner--truthy .q-toggle__track {
+  opacity: 1;
+  background: var(--q-primary);
+}
+
+.q-toggle__thumb {
+  top: 0.375rem;
+  left: 0.375rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.q-toggle__inner--indet .q-toggle__thumb {
+  left: 0.875rem;
+}
+
+.q-toggle__inner--truthy .q-toggle__thumb {
+  left: 1.375rem;
+}
+
+/* white thumb in every state (Quasar paints it currentColor when on) */
+.q-toggle__thumb:after {
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.q-toggle__inner--truthy .q-toggle__thumb:after {
+  background: #ffffff;
+}
+
+/* ---- lists / menus ------------------------------------------ */
+.q-item {
+  min-height: 2rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.q-menu .q-list {
+  padding: 0.25rem;
+}
+
+.q-menu .q-item {
+  border-radius: 0.25rem;
+}
+
+/* 0.5rem icon-to-label gap instead of Material's 16px */
+.q-item__section--side {
+  padding-right: 0.5rem;
+}
+
+.q-item__section--avatar {
+  min-width: 0;
+}
+
+/* ---- tabs --------------------------------------------------- */
+/* the tab bar carries its own bottom hairline; the active-tab
+   indicator sits on top of it */
+.q-tabs:not(.q-tabs--vertical) {
+  border-bottom: 1px solid var(--q-border);
+}
+
+.q-tabs {
+  min-height: 2.5rem;
+}
+
+.q-tab {
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  min-width: 0;
+}
+
+/* ---- chips -------------------------------------------------- */
+.q-chip {
+  border-radius: 0.25rem;
+  background: var(--q-surface-elevated);
+  height: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0 0.5rem;
+}
+
+body.desktop .q-chip--clickable:focus {
+  box-shadow: none;
+  outline: 2px solid var(--q-primary);
+  outline-offset: 2px;
+}
+
+/* ---- tables ------------------------------------------------- */
+.q-table th {
+  font-weight: 600;
+}
+
+.q-table__container {
+  border-radius: 0.5rem;
+}
+
+/* ---- separators --------------------------------------------- */
+.q-separator {
+  background: var(--q-border);
+}
+
+/* ---- E* wrapper components ---------------------------------- */
+.e-form-field {
+  display: block;
+}
+
+.e-form-field__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--q-on-surface);
+  margin-bottom: 6px;
+}
+
+.e-form-field__required {
+  color: var(--q-negative);
+}
+
+.e-form-field__help,
+.e-form-field__error {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  margin: 6px 0 0;
+}
+
+.e-form-field__help {
+  color: var(--q-on-surface-variant);
+}
+
+.e-form-field__error {
+  color: var(--q-negative);
+}
+
+.e-form-field--error .q-field--outlined .q-field__control:before {
+  border-color: var(--q-negative);
+}
+
+/* horizontal layout: label in a fixed-width column, field + messages
+   to the right. Width via --e-form-field-label-width (default 25%). */
+.e-form-field--horizontal {
+  display: grid;
+  grid-template-columns: var(--e-form-field-label-width, 25%) 1fr;
+  column-gap: 1rem;
+  align-items: start;
+}
+
+.e-form-field--horizontal .e-form-field__label {
+  margin-bottom: 0;
+  /* optically center the label against the 2rem control */
+  padding-top: 0.40625rem;
+}
+
+/* keep controls aligned in column 2 even when a row has no label */
+.e-form-field--horizontal .e-form-field__control {
+  grid-column: 2;
+}

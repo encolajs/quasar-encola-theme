@@ -95,6 +95,11 @@ $field-bottom-font-size: 12px;
 // convention): dense geometry uses these directly
 $field-dense-label-font-size: 0.875rem;
 
+// ---- selection controls -------------------------------------------
+// 2rem control boxes instead of Material's 40px touch targets
+$checkbox-inner-font-size: 2rem;
+$radio-inner-font-size: 2rem;
+
 // ---- tooltips: surface-colored card, not a Material gray pill -----
 $tooltip-color: var(--q-on-surface, #314158);
 $tooltip-background: var(--q-surface, #ffffff);
