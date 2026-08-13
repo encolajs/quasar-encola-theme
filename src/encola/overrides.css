@@ -227,6 +227,13 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
   height: 2rem;
 }
 
+/* auto-height fields (selects, textareas, chips-in-field) keep
+   height:auto but Quasar pins their dense min-height to 40px */
+.q-field--auto-height.q-field--dense:not(.q-field--labeled) .q-field__control,
+.q-field--auto-height.q-field--dense:not(.q-field--labeled) .q-field__native {
+  min-height: 2rem;
+}
+
 .q-field--outlined .q-field__control {
   border-radius: 0.25rem; /* rem re-emit of px-locked $generic radius */
   padding: 0 0.625rem;
