@@ -410,8 +410,10 @@ body.desktop .q-toggle:not(.disabled) .q-toggle__thumb:before {
 
 /* compact rem-sized toggle (Nuxt UI proportions: 2.25rem × 1.25rem
    full-pill track, 1rem thumb, 0.125rem edge gap — Quasar's em-based
-   40px geometry re-emitted in rem) */
-.q-toggle__inner {
+   40px geometry re-emitted in rem). The .q-toggle prefix outranks
+   Quasar's --dense variant rules, so dense toggles get the same
+   geometry instead of the broken em mix. */
+.q-toggle .q-toggle__inner {
   font-size: 2rem;
   width: 2.75rem;
   min-width: 2.75rem;
@@ -419,40 +421,40 @@ body.desktop .q-toggle:not(.disabled) .q-toggle__thumb:before {
   padding: 0.25rem;
 }
 
-.q-toggle__track {
+.q-toggle .q-toggle__track {
   height: 1.25rem;
   border-radius: 9999px;
   opacity: 1;
   background: var(--q-surface-accented);
 }
 
-.q-toggle__inner--truthy .q-toggle__track {
+.q-toggle .q-toggle__inner--truthy .q-toggle__track {
   opacity: 1;
   background: var(--q-primary);
 }
 
-.q-toggle__thumb {
+.q-toggle .q-toggle__thumb {
   top: 0.375rem;
   left: 0.375rem;
   width: 1rem;
   height: 1rem;
 }
 
-.q-toggle__inner--indet .q-toggle__thumb {
+.q-toggle .q-toggle__inner--indet .q-toggle__thumb {
   left: 0.875rem;
 }
 
-.q-toggle__inner--truthy .q-toggle__thumb {
+.q-toggle .q-toggle__inner--truthy .q-toggle__thumb {
   left: 1.375rem;
 }
 
 /* white thumb in every state (Quasar paints it currentColor when on) */
-.q-toggle__thumb:after {
+.q-toggle .q-toggle__thumb:after {
   background: #ffffff;
   box-shadow: none;
 }
 
-.q-toggle__inner--truthy .q-toggle__thumb:after {
+.q-toggle .q-toggle__inner--truthy .q-toggle__thumb:after {
   background: #ffffff;
 }
 
