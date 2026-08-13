@@ -1,0 +1,6 @@
+# Files excluded from the distributable zip (`pnpm run package` uses
+# git archive, which honors export-ignore).
+CLAUDE.md export-ignore
+PLAN.md export-ignore
+.gitattributes export-ignore
+.idea export-ignore

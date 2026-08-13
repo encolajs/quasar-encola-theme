@@ -1,0 +1,9 @@
+# SPA fallback: serve index.html for any path that isn't a real file,
+# so deep links like /vuetify-theme/ui/form-fields load the app.
+# Relative rewrite = resolves within this directory, whatever the base.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.html [L]
+</IfModule>
