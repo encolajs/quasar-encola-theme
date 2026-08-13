@@ -1,0 +1,7 @@
+/* =============================================================
+   Layer 4 — override CSS.
+   Quasar does NOT use CSS @layer: this file is imported after
+   Quasar's CSS and wins by source order at equal-or-greater
+   specificity. When a rule loses, mirror Quasar's own selector —
+   never add !important.
+   ============================================================= */

@@ -8,4 +8,121 @@
 // the plugin then applies a fast targeted-injection path.
 // Every name below is verified against the installed
 // node_modules/quasar/src/css/variables.sass — never trust memory.
+//
+// rem convention: values Quasar feeds into px SASS arithmetic stay px
+// (marked "px-locked"); everything else is rem. Runtime-switchable
+// colors reference --q-* CSS vars (set by preset.ts); the fallback is
+// the slate default so the compiled CSS stands alone.
 // =============================================================
+
+// ---- brand colors (compile-time seeds; runtime values are --q-* CSS
+// vars emitted by preset.ts, so these only cover no-JS edge cases) ----
+$primary: #6366f1; // indigo-500
+$secondary: #62748e; // slate-500
+$accent: #6366f1;
+$positive: #22c55e; // green-500
+$negative: #ef4444; // red-500
+$info: #3b82f6; // blue-500
+$warning: #f59e0b; // amber-500
+
+// dark-mode surfaces: flat design — cards share the page color
+// (slate-900); hairline borders convey depth, not surface steps
+$dark: #0f172b;
+$dark-page: #0f172b;
+
+// ---- hairlines ----------------------------------------------------
+// One border color everywhere, full opacity, runtime-switchable.
+// (Nothing in Quasar applies SASS color math to these — verified.)
+$separator-color: var(--q-border, #e2e8f0);
+$separator-dark-color: var(--q-border, #314158);
+
+// ---- typography ---------------------------------------------------
+$typography-font-family: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+$body-font-size: 0.875rem;
+$body-line-height: 1.5;
+$min-line-height: 1.2;
+
+// Kill Material letter-spacing everywhere, tighten sizes, semibold
+// headings instead of light oversized display type (same scale as the
+// Vuetify sibling's typography map).
+$h1: (size: 3rem, line-height: 1.2, letter-spacing: normal, weight: 700);
+$h2: (size: 2.5rem, line-height: 1.2, letter-spacing: normal, weight: 700);
+$h3: (size: 2.25rem, line-height: 1.25, letter-spacing: normal, weight: 700);
+$h4: (size: 1.875rem, line-height: 1.3, letter-spacing: normal, weight: 600);
+$h5: (size: 1.5rem, line-height: 1.35, letter-spacing: normal, weight: 600);
+$h6: (size: 1.25rem, line-height: 1.4, letter-spacing: normal, weight: 600);
+$subtitle1: (size: 1rem, line-height: 1.5, letter-spacing: normal, weight: 600);
+$subtitle2: (size: 0.875rem, line-height: 1.4, letter-spacing: normal, weight: 600);
+$body1: (size: 1rem, line-height: 1.5, letter-spacing: normal, weight: 400);
+$body2: (size: 0.875rem, line-height: 1.5, letter-spacing: normal, weight: 400);
+$overline: (size: 0.75rem, line-height: 1.5, letter-spacing: normal, weight: 500);
+$caption: (size: 0.75rem, line-height: 1.4, letter-spacing: normal, weight: 400);
+
+// ---- radii --------------------------------------------------------
+// buttons/inputs 4px, cards 8px (cards have no variable — overrides.css)
+// px-locked: QChip computes ($generic-border-radius - 1px) in SASS;
+// overrides.css re-emits the radius in rem on the components that show it
+$generic-border-radius: 4px;
+$button-border-radius: 0.25rem;
+$button-push-border-radius: 0.25rem; // de-Materialized: no push look
+$button-rounded-border-radius: 9999px; // opt-in pill
+
+// ---- buttons ------------------------------------------------------
+$button-font-size: 0.875rem;
+$button-font-weight: 500;
+$button-padding: 0.25rem 0.625rem;
+$button-shadow: none;
+$button-shadow-active: none;
+
+// ---- flat surfaces: no elevation anywhere -------------------------
+$menu-box-shadow: none;
+$menu-box-shadow-dark: none;
+$menu-background: var(--q-surface, #ffffff);
+$table-box-shadow: none;
+$table-box-shadow-dark: none;
+$layout-shadow: none;
+$layout-shadow-dark: none;
+$rating-shadow: none;
+
+// ---- fields / inputs ----------------------------------------------
+$input-font-size: 0.875rem;
+$input-text-color: var(--q-on-surface, #314158);
+$input-label-color: var(--q-on-surface-variant, #45556c);
+// px-locked: $field-with-bottom-padding-bottom multiplies this by
+// $field-bottom-line-height and adds 8px in SASS
+$field-bottom-font-size: 12px;
+// floating `label` prop (supported but off-theme; EFormField is the
+// convention): dense geometry uses these directly
+$field-dense-label-font-size: 0.875rem;
+
+// ---- tooltips: surface-colored card, not a Material gray pill -----
+$tooltip-color: var(--q-on-surface, #314158);
+$tooltip-background: var(--q-surface, #ffffff);
+$tooltip-padding: 0.25rem 0.5rem;
+$tooltip-border-radius: 0.25rem;
+$tooltip-fontsize: 0.75rem;
+$tooltip-mobile-padding: 0.375rem 0.625rem;
+$tooltip-mobile-fontsize: 0.875rem;
+
+// ---- tables -------------------------------------------------------
+$table-th-font-size: 0.75rem;
+$table-tbody-td-font-size: 0.875rem;
+$table-title-font-size: 1.125rem;
+$table-bottom-font-size: 0.75rem;
+$table-hover-background: var(--q-surface-muted, #f8fafc);
+$table-selected-background: var(--q-surface-elevated, #f1f5f9);
+$table-dark-hover-background: var(--q-surface-muted, #1d293d);
+$table-dark-selected-background: var(--q-surface-elevated, #1d293d);
+
+// ---- toolbars -----------------------------------------------------
+$toolbar-min-height: 3rem;
+$toolbar-title-font-size: 1rem;
+$toolbar-title-font-weight: 600;
+$toolbar-title-letter-spacing: normal;
+
+// ---- misc ---------------------------------------------------------
+$chat-message-received-bg: var(--q-surface-elevated, #f1f5f9);
+$chat-message-sent-bg: var(--q-surface-elevated, #f1f5f9);
+$chat-message-received-color: var(--q-on-surface, #314158);
+$chat-message-sent-color: var(--q-on-surface, #314158);
+$rating-grade-color: #f59e0b; // amber-500, not Material yellow
