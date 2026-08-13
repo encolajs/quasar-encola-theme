@@ -32,5 +32,8 @@
     "vite-plugin-vue-devtools": "^8.2.1",
     "vue-tsc": "^3.3.9"
   },
-  "packageManager": "pnpm@11.1.0"
+  "packageManager": "pnpm@11.1.0",
+  "pnpm": {
+    "ignoredBuiltDependencies": ["@parcel/watcher"]
+  }
 }
