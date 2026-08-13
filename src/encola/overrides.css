@@ -222,16 +222,37 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
 /* ---- fields ------------------------------------------------- */
 /* 32px label-less fields (the EFormField convention). Fields using
    the floating `label` prop keep Quasar's taller float geometry. */
-.q-field--dense:not(.q-field--labeled) .q-field__control,
+.q-field--dense:not(.q-field--labeled):not(.q-field--auto-height):not(.q-textarea) .q-field__control,
 .q-field--dense:not(.q-field--labeled) .q-field__marginal {
   height: 2rem;
 }
 
-/* auto-height fields (selects, textareas, chips-in-field) keep
-   height:auto but Quasar pins their dense min-height to 40px */
+/* growable fields must keep Quasar's height:auto — a fixed height
+   would stop the frame from following content growth or a textarea's
+   resize handle. They only get the 2rem floor instead:
+   - auto-height fields (selects, chips-in-field): dense-pinned to 40px
+   - textareas: dense-pinned to 36px, own padding re-emitted in rem */
 .q-field--auto-height.q-field--dense:not(.q-field--labeled) .q-field__control,
-.q-field--auto-height.q-field--dense:not(.q-field--labeled) .q-field__native {
+.q-field--auto-height.q-field--dense:not(.q-field--labeled) .q-field__native,
+.q-textarea.q-field--dense:not(.q-field--labeled) .q-field__control,
+.q-textarea.q-field--dense:not(.q-field--labeled) .q-field__native {
   min-height: 2rem;
+}
+
+/* (32px - 18px line) / 2, replacing Quasar's 9px dense padding */
+.q-textarea.q-field--dense:not(.q-field--labeled) .q-field__native {
+  padding-top: 0.4375rem;
+}
+
+/* chips inside fields (multi-select): 0.125rem native padding +
+   0.125rem chip margin + 1.5rem chip = one 2rem row, no extra bulk */
+.q-select.q-field--dense .q-field__native {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
+.q-field__native .q-chip {
+  margin: 0.125rem 0.25rem 0.125rem 0;
 }
 
 .q-field--outlined .q-field__control {
