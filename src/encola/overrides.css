@@ -219,6 +219,16 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
   background: var(--q-surface);
 }
 
+/* toasts: flat surface card; colored ones keep their bg-* fill */
+.q-notification {
+  box-shadow: none;
+  border-radius: 0.5rem;
+  border: 1px solid var(--q-border);
+  background: var(--q-surface);
+  color: var(--q-on-surface);
+  font-size: 0.875rem;
+}
+
 /* ---- fields ------------------------------------------------- */
 /* 32px label-less fields (the EFormField convention). Fields using
    the floating `label` prop keep Quasar's taller float geometry. */

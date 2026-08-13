@@ -44,7 +44,11 @@ const tableColumns = [
 ]
 
 function notify() {
-  $q.notify({ message: 'Saved successfully', color: 'positive' })
+  $q.notify({
+    message: 'Saved successfully',
+    color: 'positive',
+    textColor: 'on-positive',
+  })
 }
 </script>
 
