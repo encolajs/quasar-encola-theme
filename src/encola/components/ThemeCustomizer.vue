@@ -64,7 +64,10 @@ $button-border-radius: ${rem(px)};
     </div>
     <q-separator />
 
-    <div class="q-pa-md column q-gutter-y-md">
+    <!-- no-wrap: Quasar's .column wraps by default, and a wrapped
+         column sizes its line to the widest content — the code blocks
+         would widen the drawer instead of scrolling -->
+    <div class="q-pa-md column no-wrap q-gutter-y-md">
       <EFormField
         label="Primary color"
         :error="primaryValid ? undefined : 'Enter a 6-digit hex value, e.g. #6366f1.'"
@@ -119,7 +122,7 @@ $button-border-radius: ${rem(px)};
           in the theme source files, then restart the dev server.
         </p>
 
-        <div class="column q-gutter-y-md">
+        <div class="column no-wrap q-gutter-y-md">
           <div>
             <div class="e-customizer__step q-mb-xs">1. Colors — the blueprint</div>
             <pre class="e-customizer__code">{{ colorsSnippet }}</pre>
