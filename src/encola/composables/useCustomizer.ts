@@ -60,9 +60,11 @@ export function useCustomizer() {
         el.id = 'e-customizer-radius'
         document.head.appendChild(el)
       }
+      // checkboxes track the control radius but stay subtle (cap 4px)
       el.textContent = `
 .q-btn--rectangle, .q-btn--round, .q-field--outlined .q-field__control, .q-chip, .q-menu .q-item, .q-tooltip, .q-notification { border-radius: ${px}px; }
 .q-card, .q-menu, .q-dialog__inner > div, .q-banner, .q-table__container { border-radius: ${px * 2}px; }
+.q-checkbox__bg { border-radius: ${Math.min(px, 4)}px; }
 `
     }
 

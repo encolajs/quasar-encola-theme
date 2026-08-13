@@ -37,7 +37,8 @@ $button-border-radius: ${rem(px)};
 
 /* src/encola/overrides.css — rem re-emits + floating surfaces */
 /* controls: */ border-radius: ${rem(px)};
-/* cards, menus, dialogs: */ border-radius: ${rem(px * 2)};`
+/* cards, menus, dialogs: */ border-radius: ${rem(px * 2)};
+/* checkboxes (.q-checkbox__bg, cap 4px): */ border-radius: ${rem(Math.min(px, 4))};`
 })
 </script>
 
