@@ -559,12 +559,12 @@ body.desktop .q-chip--clickable:focus {
 /* app sidebar: logo + top section pinned, only the main menu scrolls,
    bottom section pinned. Structure lives in AppSidebar.vue.
    The muted surface step sets it apart from the content area (and makes
-   the chosen surface palette visible). */
-.q-drawer.e-sidebar {
+   the chosen surface palette visible).
+   QDrawer forwards `class` to its inner .q-drawer__content div (which
+   also carries a `scroll` class), so the flex column and the overflow
+   reset must live on that element — not on aside.q-drawer. */
+.e-sidebar.q-drawer__content {
   background: var(--q-surface-muted);
-}
-
-.e-sidebar .q-drawer__content {
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -670,8 +670,8 @@ body.desktop .q-chip--clickable:focus {
   background: var(--q-surface-muted);
 }
 
-/* theme customizer drawer */
-.q-drawer.e-customizer {
+/* theme customizer drawer (class lands on .q-drawer__content, as above) */
+.e-customizer.q-drawer__content {
   background: var(--q-surface);
 }
 
