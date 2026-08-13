@@ -184,6 +184,12 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
   border-radius: 0.25rem; /* rem re-emit of px-locked $generic radius */
 }
 
+/* soft ("tonal") buttons: pair with flat + a color —
+   <q-btn flat color="primary" class="e-btn-soft"> */
+.q-btn.e-btn-soft {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
 /* colorless outline buttons get the neutral hairline instead of
    currentColor (Quasar draws the border on :before) */
 .q-btn--outline:not([class*='text-']):before {
