@@ -523,6 +523,17 @@ body.desktop .q-chip--clickable:focus {
   border-radius: 0.5rem;
 }
 
+/* ---- uploader ----------------------------------------------- */
+/* flat drop zone: muted header on a hairline frame, not primary fill */
+.q-uploader__header {
+  background: var(--q-surface-muted);
+  color: var(--q-on-surface);
+}
+
+.q-uploader--bordered {
+  border-color: var(--q-border);
+}
+
 /* ---- separators --------------------------------------------- */
 .q-separator {
   background: var(--q-border);

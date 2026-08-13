@@ -19,6 +19,7 @@ import {
   QBadge,
   QBtn,
   QBtnDropdown,
+  QBtnToggle,
   QCard,
   QChip,
   QEditor,
@@ -229,6 +230,8 @@ function patchComponentDefaults() {
   defaultProp(QBtnDropdown, 'unelevated', Boolean, true)
   defaultProp(QTab, 'noCaps', Boolean, true)
   defaultProp(QRouteTab, 'noCaps', Boolean, true)
+  defaultProp(QBtnToggle, 'noCaps', Boolean, true)
+  defaultProp(QBtnToggle, 'unelevated', Boolean, true)
 
   // readable text on solid fills, driven by the on-* tokens
   for (const solid of [QBtn, QBtnDropdown, QBadge, QChip]) {
