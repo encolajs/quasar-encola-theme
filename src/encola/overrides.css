@@ -26,6 +26,15 @@ body.body--dark {
   background: var(--q-surface);
 }
 
+/* links: quiet color shifts, no default underline */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 a:focus-visible {
   outline: 2px solid var(--q-primary);
   outline-offset: 2px;
@@ -217,6 +226,35 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
 .q-banner {
   border-radius: 0.5rem;
   background: var(--q-surface);
+}
+
+/* tonal alerts (Quasar has no QAlert): pair with QBanner —
+   <q-banner class="e-alert e-alert--positive"> */
+.e-alert {
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  min-height: 0;
+  padding: 0.625rem 0.75rem;
+}
+
+.e-alert--positive {
+  background: color-mix(in srgb, var(--q-positive) 12%, transparent);
+  color: var(--q-positive);
+}
+
+.e-alert--negative {
+  background: color-mix(in srgb, var(--q-negative) 12%, transparent);
+  color: var(--q-negative);
+}
+
+.e-alert--warning {
+  background: color-mix(in srgb, var(--q-warning) 14%, transparent);
+  color: var(--q-warning);
+}
+
+.e-alert--info {
+  background: color-mix(in srgb, var(--q-info) 12%, transparent);
+  color: var(--q-info);
 }
 
 /* toasts: flat surface card; colored ones keep their bg-* fill */
