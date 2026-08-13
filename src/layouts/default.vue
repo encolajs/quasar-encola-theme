@@ -23,7 +23,7 @@ const { contentClass } = useContentWidth()
 
 const THEME_STORAGE_KEY = 'encola-theme'
 
-const BUY_URL = 'https://payhip.com/b/Bnds3'
+const BUY_URL = 'https://payhip.com/b/tDuBm'
 
 function toggleTheme() {
   $q.dark.toggle()

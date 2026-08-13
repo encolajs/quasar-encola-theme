@@ -275,7 +275,7 @@ const userMenu = [
     <!-- below main menu: help + user menu -->
     <div class="e-sidebar__bottom">
       <q-list>
-        <q-item clickable href="#">
+        <q-item clickable href="https://payhip.com/EncolaJS/contact" target="_blank">
           <q-item-section avatar>
             <CircleHelp :size="18" />
           </q-item-section>

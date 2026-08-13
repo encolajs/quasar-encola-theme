@@ -1,0 +1,5 @@
+# @parcel/watcher (a vue-devtools transitive dep, dev-only) wants a
+# postinstall build; declining it here keeps a fresh `pnpm install`
+# free of pnpm's interactive build-approval prompt.
+allowBuilds:
+  '@parcel/watcher': false
