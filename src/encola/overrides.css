@@ -350,6 +350,17 @@ body.desktop .q-btn--flat.q-hoverable:hover > .q-focus-helper {
   opacity: 0.4;
 }
 
+/* QSelect ignores `placeholder` unless use-input is set; render one
+   through the #selected slot instead:
+   <template #selected>
+     <span v-if="!model" class="e-select-placeholder">Pick one</span>
+     <template v-else>{{ model }}</template>
+   </template> */
+.e-select-placeholder {
+  color: var(--q-on-surface);
+  opacity: 0.4;
+}
+
 .q-field__marginal {
   color: var(--q-on-surface-variant);
 }

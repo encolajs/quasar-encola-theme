@@ -146,7 +146,12 @@ function notify() {
           </div>
           <div class="col-12 col-md-6">
             <EFormField label="Team">
-              <q-select v-model="select" :options="options" placeholder="Pick a team" />
+              <q-select v-model="select" :options="options">
+                <template #selected>
+                  <span v-if="!select" class="e-select-placeholder">Pick a team</span>
+                  <template v-else>{{ select }}</template>
+                </template>
+              </q-select>
             </EFormField>
           </div>
           <div class="col-12 col-md-6">

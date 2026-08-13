@@ -16,6 +16,16 @@ export const router = createRouter({
       meta: { layout: 'default', title: 'Kitchen sink' },
     },
     {
+      path: '/forms',
+      component: () => import('@/pages/forms.vue'),
+      meta: { layout: 'default', title: 'Form layouts' },
+    },
+    {
+      path: '/form-wizard',
+      component: () => import('@/pages/form-wizard.vue'),
+      meta: { layout: 'default', title: 'Form wizard' },
+    },
+    {
       path: '/auth/login',
       component: () => import('@/pages/auth/login.vue'),
       meta: { layout: 'blank', title: 'Sign in' },
