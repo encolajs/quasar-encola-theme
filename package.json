@@ -2,6 +2,7 @@
   "name": "quasar-encola-theme",
   "version": "0.1.0",
   "description": "Encola turns Quasar v2 into a flat, Tailwind-style UI — no Material Design, no forks. Drop-in theme with example pages, dark mode included.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
