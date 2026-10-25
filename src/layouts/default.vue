@@ -23,8 +23,6 @@ const { contentClass } = useContentWidth()
 
 const THEME_STORAGE_KEY = 'encola-theme'
 
-const BUY_URL = 'https://payhip.com/b/tDuBm'
-
 function toggleTheme() {
   $q.dark.toggle()
   localStorage.setItem(THEME_STORAGE_KEY, $q.dark.isActive ? 'dark' : 'light')
@@ -55,14 +53,6 @@ onMounted(() => {
           />
         </q-btn>
         <q-space />
-        <q-btn
-          color="primary"
-          label="Buy now"
-          class="q-mr-sm"
-          :href="BUY_URL"
-          target="_blank"
-          rel="noopener"
-        />
         <q-btn flat round size="sm" aria-label="Toggle theme" @click="toggleTheme">
           <component :is="$q.dark.isActive ? Sun : Moon" :size="18" />
         </q-btn>
